@@ -1,28 +1,60 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main>
+    <MovieFilterPanel
+      :directors="directors"
+      :filters="filters"
+      @change="updateFilters"
+    />
+
+    <MovieList
+      :movies="movies"
+      :directors="directors"
+      :isLoading="loading"
+      @loadMore="fetchMovies"
+    />
+
+    <InfiniteLoading @infinite="handleLoadMore" spinner="waveDots" v-if="movies.length">
+      <span slot="no-results"></span>
+      <span slot="no-more"></span>
+    </InfiniteLoading>
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import InfiniteLoading from 'vue-infinite-loading';
+import { mapActions, mapState, mapGetters } from 'vuex';
+
+import MovieFilterPanel from '@/components/MovieFilterPanel.vue';
+import MovieList from '@/components/MovieList.vue';
 
 export default {
-  name: 'app',
   components: {
-    HelloWorld,
+    MovieFilterPanel,
+    MovieList,
+    InfiniteLoading,
+  },
+
+  computed: {
+    ...mapState(['loading', 'movies', 'directors', 'filters']),
+    ...mapGetters(['end']),
+  },
+
+  methods: {
+    ...mapActions(['fetchMovies', 'init', 'updateFilters']),
+
+    async handleLoadMore(loader) {
+      await this.fetchMovies();
+
+      if (this.end) {
+        loader.complete();
+      } else {
+        loader.loaded();
+      }
+    },
+  },
+
+  created() {
+    this.init();
   },
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
