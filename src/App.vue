@@ -13,7 +13,11 @@
       @loadMore="fetchMovies"
     />
 
-    <InfiniteLoading @infinite="handleLoadMore" spinner="waveDots" v-if="movies.length">
+    <InfiniteLoading
+      v-if="movies.length"
+      spinner="waveDots"
+      @infinite="handleLoadMore"
+    >
       <span slot="no-results"></span>
       <span slot="no-more"></span>
     </InfiniteLoading>
@@ -40,7 +44,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchMovies', 'init', 'updateFilters']),
+    ...mapActions(['init', 'fetchMovies', 'updateFilters']),
 
     async handleLoadMore(loader) {
       await this.fetchMovies();

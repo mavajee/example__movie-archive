@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { API_ENTRY_POINT, ITEMS_PER_PAGE } from '@/constants';
 
-const req = axios.create({
+export const request = axios.create({
   baseURL: API_ENTRY_POINT,
 });
 
@@ -13,7 +13,7 @@ export async function fetchMovies({
   sort,
   order,
 } = {}) {
-  const response = await req.get('movies', {
+  const response = await request.get('movies', {
     params: {
       _limit: limit,
       _page: page,
@@ -27,7 +27,7 @@ export async function fetchMovies({
 }
 
 export async function fetchDirectors() {
-  const response = await req.get('directors');
+  const response = await request.get('directors');
 
   return response.data;
 }

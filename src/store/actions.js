@@ -1,4 +1,5 @@
 import { fetchMovies, fetchDirectors } from '@/services/api';
+import serialize from '@/services/serialize';
 
 export default {
   async init({ dispatch }) {
@@ -23,18 +24,10 @@ export default {
 
   async fetchDirectors({ commit }) {
     const directors = await fetchDirectors();
-
-    const serializedDirectors = directors.reduce(
-      (res, value) => {
-        res.byId[value.id] = value;
-        res.ids.push(value.id);
-
-        return res;
-      },
-      { byId: [], ids: [] },
-    );
-
-    commit('setDirectors', serializedDirectors);
+    const a = serialize(directors);
+    console.log(a)
+    debugger
+    commit('setDirectors', serialize(directors));
   },
 
   updateFilters({ commit, dispatch }, filters) {
