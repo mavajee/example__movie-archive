@@ -19,3 +19,7 @@ yarn run build
 ```
 yarn run lint
 ```
+
+# API
+
+[Swagger spec](https://app.swaggerhub.com/apis/mavajee7/movie-archive/1.0.0)
